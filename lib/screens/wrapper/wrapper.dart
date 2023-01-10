@@ -9,6 +9,7 @@ import 'package:vonette_mobile/screens/wrapper/counsellor.dart';
 import 'package:vonette_mobile/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vonette_mobile/shared/loading.dart';
+import 'package:vonette_mobile/screens/wrapper/UserPolicy.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -31,20 +32,26 @@ class Wrapper extends StatelessWidget {
           //the stream builder looks for if counsellor is none
           // if it is, then its gonna run the counsellors page
           child: StreamBuilder(
-            stream: DatabaseService(user: user).getCurrentUserDM,
-            builder: ((context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                try {
-                  if (snapshot.data['counsellor'] == 'Counsellor: None') 
-                    { return const CounselorPage();
-                  } else if (snapshot.data['successful'] == false)
-                    { return const ClubsClasses();
-                    } return const Home();
-                } catch(e) { return const Loading();}
-              } return const Loading();
-            })
-          )
-        );
+              stream: DatabaseService(user: user).getCurrentUserDM,
+              builder: ((context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  try {
+                    if (snapshot.data['counsellor'] == 'Counsellor: None') {
+                      return const CounselorPage();
+                    }
+                    if (snapshot.data['successful'] == false) {
+                      return const ClubsClasses();
+                    }
+                    //if (snapshot.data['acceptedUser'] == false) {
+                    //return UserPolicy();
+                    //}
+                    return const UserPolicy();
+                  } catch (e) {
+                    return const Loading();
+                  }
+                }
+                return const Loading();
+              })));
     }
   }
 }

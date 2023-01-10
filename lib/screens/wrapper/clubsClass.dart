@@ -70,8 +70,8 @@ class _ClubsClassesState extends State<ClubsClasses> {
                                   var profileUrl =
                                       snapshot.data.docs[index]["profile_url"];
 
-                                  return buildInfoCard(profileUrl, clubName, clubDesc,
-                                      advEmail, user, context);
+                                  return buildInfoCard(profileUrl, clubName,
+                                      clubDesc, advEmail, user, context);
                                 }))))
               ]);
             }
@@ -82,15 +82,17 @@ class _ClubsClassesState extends State<ClubsClasses> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.purple,
           onPressed: () {
-            DatabaseService(user: user).updateSuccess();
+            setState(() {
+              DatabaseService(user: user).updateSuccess();
+            });
           },
           child: const Icon(Icons.arrow_forward_outlined)),
     );
   }
 }
 
-Widget buildInfoCard(String profileUrl, String title, String description, String advisors,
-    UserInApp? user, BuildContext context) {
+Widget buildInfoCard(String profileUrl, String title, String description,
+    String advisors, UserInApp? user, BuildContext context) {
   double width_sc = MediaQuery.of(context).size.width;
   return Card(
     elevation: 10,
@@ -108,8 +110,7 @@ Widget buildInfoCard(String profileUrl, String title, String description, String
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: CircleAvatar(
-                radius: 30,
-                backgroundImage: NetworkImage(profileUrl)),
+                  radius: 30, backgroundImage: NetworkImage(profileUrl)),
             ),
           ),
           Padding(
